@@ -33,7 +33,7 @@ public class MainActivity extends Activity {
     private TextView tvTurn;
 
     private int[][] valueCell = new int[maxN][maxN];///0 is empty,1 is player,2 is bot
-    private int winner_play;//who is winner? 0 is noone, 1 is player, 2 is bot
+    private int winner_play;//who is winner? 0 is none, 1 is player, 2 is bot
     private boolean firstMove;
     private int xMove, yMove;//x and y axis of cell => define position of cell
     private int turnPlay;// whose turn?
@@ -323,8 +323,8 @@ public class MainActivity extends Activity {
         //copy 2 image for 2 drawable player and bot
         //edit it :D
         drawCell[0] = null;//empty cell
-        drawCell[1] = context.getResources().getDrawable(R.drawable.flame);//drawable for player
-        drawCell[2] = context.getResources().getDrawable(R.drawable.water);//for bot
+        drawCell[1] = context.getResources().getDrawable(R.drawable.black_chess);//drawable for player
+        drawCell[2] = context.getResources().getDrawable(R.drawable.white_chess);//for bot
     }
 
 
