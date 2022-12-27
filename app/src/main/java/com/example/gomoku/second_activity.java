@@ -23,12 +23,12 @@ public class second_activity extends AppCompatActivity {
         Button btn_double = findViewById(R.id.btn_double);
         SeekBar seekBar = findViewById(R.id.seekBar);
         TextView tv_value = findViewById(R.id.tv_Value);
-        tv_value.setText("格數：15");
+        tv_value.setText(getString(R.string.blockvalue)+"15");
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                    tv_value.setText("格數："+i);
+                    tv_value.setText(getString(R.string.blockvalue)+i);
             }
 
             @Override

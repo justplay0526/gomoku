@@ -27,8 +27,6 @@ public class MainActivity extends Activity {
     private final ImageView[][] ivCell = new ImageView[maxN][maxN];
 
     private final Drawable[] drawCell = new Drawable[4];//0 is empty, 1 is player, 2 is bot, 3 is background
-
-
     private Button btnPlay;
     private TextView tvTurn;
 
@@ -37,7 +35,6 @@ public class MainActivity extends Activity {
     private boolean firstMove;
     private int xMove, yMove;//x and y axis of cell => define position of cell
     private int turnPlay;// whose turn?
-
     public MainActivity() {
     }
 
@@ -62,8 +59,8 @@ public class MainActivity extends Activity {
         btnPlay = findViewById(R.id.btnPlay);
         tvTurn = findViewById(R.id.tvTurn);
 
-        btnPlay.setText("Play Game");
-        tvTurn.setText("Press button Play Game");
+        btnPlay.setText(getString(R.string.playgame));
+        tvTurn.setText(getString(R.string.pressbuttonplaygame));
 
         btnPlay.setOnClickListener(v -> {
             init_game();
@@ -80,18 +77,17 @@ public class MainActivity extends Activity {
 
         if (turnPlay == 1) {//player play first
             //inform => make a toast
-            Toast.makeText(context, "Player play first!", Toast.LENGTH_SHORT).show();//dont forget show(); :D
+            Toast.makeText(context, getString(R.string.Playerplayfirst), Toast.LENGTH_SHORT).show();//dont forget show(); :D
             playerTurn();
         } else {//bot turn
-            Toast.makeText(context, "Bot play first!", Toast.LENGTH_SHORT).show();//dont forget show(); :D
+            Toast.makeText(context, getString(R.string.Botplayfirst), Toast.LENGTH_SHORT).show();//dont forget show(); :D
             botTurn();
         }
-
     }
 
     private void botTurn() {
         Log.d("tuanh","bot turn");
-        tvTurn.setText("Bot");
+        tvTurn.setText(getString(R.string.Bot));
         //if this is first move bot always choose center cell (7,7)
         if (firstMove) {
             firstMove = false;
@@ -202,15 +198,15 @@ public class MainActivity extends Activity {
         //aw we forget 1 thing :D change the value of valuaCell
         //if no empty cell exist => draw
         if (noEmptycell()) {
-            Toast.makeText(context, "Draw!!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, getString(R.string.Draw), Toast.LENGTH_SHORT).show();
             return;
         } else if (CheckWinner()) {
             if (winner_play == 1) {
-                Toast.makeText(context, "Winner is Player", Toast.LENGTH_SHORT).show();//
-                tvTurn.setText("Winner is Player");
+                Toast.makeText(context, getString(R.string.WinnerisPlayer), Toast.LENGTH_SHORT).show();//
+                tvTurn.setText(getString(R.string.WinnerisPlayer));
             } else {
-                Toast.makeText(context, "Winner is Bot", Toast.LENGTH_SHORT).show();//
-                tvTurn.setText("Winner is Bot");
+                Toast.makeText(context, getString(R.string.WinnerisBot), Toast.LENGTH_SHORT).show();//
+                tvTurn.setText(getString(R.string.WinnerisBot));
             }
             return;
         }
@@ -302,7 +298,7 @@ public class MainActivity extends Activity {
 
     private void playerTurn() {
         Log.d("tuanh","player turn");
-        tvTurn.setText("Player");
+        tvTurn.setText(getString(R.string.Player));
         firstMove=false;
         isClicked = false;
         /// we get xMove,yMove of player by the way listen click on cell so turn listen on

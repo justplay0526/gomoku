@@ -10,4 +10,13 @@
     <string name="gomoku">Gomoku</string>
     <string name="bigorsmall">Resize Checkerboard</string>
     <string name="blockvalue">value:</string>
+    <string name="playgame">Play Game</string>
+    <string name="pressbuttonplaygame">Press button Play Game</string>
+    <string name="Playerplayfirst">Player play first!</string>
+    <string name="Botplayfirst">Bot play first!</string>
+    <string name="Bot">Bot</string>
+    <string name="Player">Player</string>
+    <string name="Draw">Draw!!!</string>
+    <string name="WinnerisPlayer">Winner is Player</string>
+    <string name="WinnerisBot">Winner is Bot</string>
 </resources>
