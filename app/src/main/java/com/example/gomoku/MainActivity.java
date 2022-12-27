@@ -323,8 +323,8 @@ public class MainActivity extends Activity {
         //copy 2 image for 2 drawable player and bot
         //edit it :D
         drawCell[0] = null;//empty cell
-        drawCell[1] = context.getResources().getDrawable(R.drawable.flame);//drawable for player
-        drawCell[2] = context.getResources().getDrawable(R.drawable.water);//for bot
+        drawCell[1] = context.getResources().getDrawable(R.drawable.black_chess);//drawable for player
+        drawCell[2] = context.getResources().getDrawable(R.drawable.white_chess);//for bot
     }
 
 
