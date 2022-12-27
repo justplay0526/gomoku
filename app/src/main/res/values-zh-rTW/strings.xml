@@ -10,4 +10,13 @@
     <string name="gomoku">五子棋</string>
     <string name="bigorsmall">調整棋盤大小</string>
     <string name="blockvalue">格數：</string>
+    <string name="playgame">遊玩遊戲</string>
+    <string name="pressbuttonplaygame">按下按鈕並開始</string>
+    <string name= "Playerplayfirst">玩家起手！</string>
+    <string name= "Botplayfirst">電腦起手！</string>
+    <string name= "Bot">電腦</string>
+    <string name="Player">玩家</string>
+    <string name= "Draw">平手！！！</string>
+    <string name="WinnerisPlayer">玩家勝利</string>
+    <string name="WinnerisBot">電腦勝利</string>
 </resources>
