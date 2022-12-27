@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:backgroundTint="#4CAF50"
-        android:text="返回"
+        android:text="@string/back"
         android:textSize="24sp"/>
 
     <LinearLayout
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/holo_blue_dark"
             android:gravity="center"
-            android:text="NewGame"
+            android:text="@string/newgame"
             android:textSize="18sp"
             android:textStyle="bold"
             android:id="@+id/btnPlay" />
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:padding="5dp"
-                android:text="Turn of:"
+                android:text="@string/turn_of"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="5dp"
-                android:text="Click NewGame to play"
+                android:text="@string/hint"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:id="@+id/tvTurn" />
@@ -62,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/linMenu"
-        android:background="@android:color/holo_purple"
+        android:background="@android:color/darker_gray"
         android:orientation="vertical">
 
     </LinearLayout>

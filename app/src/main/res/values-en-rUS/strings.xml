@@ -8,6 +8,6 @@
     <string name="double1">Double Play</string>
     <string name="DLC">DLC pack</string>
     <string name="gomoku">Gomoku</string>
-    <string name="bigorsmall">Resize Checkerboard</string>
     <string name="blockvalue">value:</string>
+    <string name="bigorsmall">Resize Checkerboard</string>
 </resources>
