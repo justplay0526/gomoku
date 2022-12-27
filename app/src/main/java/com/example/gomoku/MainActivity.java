@@ -3,12 +3,12 @@ package com.example.gomoku;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,15 +24,15 @@ public class MainActivity extends Activity {
     final static int maxN = 15;
     private Context context;
     //declare for imageView (Cells) array
-    private ImageView[][] ivCell = new ImageView[maxN][maxN];
+    private final ImageView[][] ivCell = new ImageView[maxN][maxN];
 
-    private Drawable[] drawCell = new Drawable[4];//0 is empty, 1 is player, 2 is bot, 3 is background
+    private final Drawable[] drawCell = new Drawable[4];//0 is empty, 1 is player, 2 is bot, 3 is background
 
 
     private Button btnPlay;
     private TextView tvTurn;
 
-    private int[][] valueCell = new int[maxN][maxN];///0 is empty,1 is player,2 is bot
+    private final int[][] valueCell = new int[maxN][maxN];///0 is empty,1 is player,2 is bot
     private int winner_play;//who is winner? 0 is none, 1 is player, 2 is bot
     private boolean firstMove;
     private int xMove, yMove;//x and y axis of cell => define position of cell
@@ -45,6 +45,13 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Button btn_back = findViewById(R.id.btn_back);
+        btn_back.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this,MyService2.class);
+            startService(intent);
+            finish();
+        });
+
         context = this;
         setListen();
         loadResources();
@@ -52,18 +59,15 @@ public class MainActivity extends Activity {
     }
 
     private void setListen() {
-        btnPlay = (Button) findViewById(R.id.btnPlay);
-        tvTurn = (TextView) findViewById(R.id.tvTurn);
+        btnPlay = findViewById(R.id.btnPlay);
+        tvTurn = findViewById(R.id.tvTurn);
 
         btnPlay.setText("Play Game");
         tvTurn.setText("Press button Play Game");
 
-        btnPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                init_game();
-                play_game();
-            }
+        btnPlay.setOnClickListener(v -> {
+            init_game();
+            play_game();
         });
     }
 
@@ -105,8 +109,8 @@ public class MainActivity extends Activity {
     private final int[] iRow={-1,-1,-1,0,1,1,1,0};
     private final int[] iCol={-1,0,1,1,1,0,-1,-1};
     private void findBotMove() {
-        List<Integer> listX = new ArrayList<Integer>();
-        List<Integer> listY= new ArrayList<Integer>();
+        List<Integer> listX = new ArrayList<>();
+        List<Integer> listY= new ArrayList<>();
         //find empty cell can move, and we we only move two cell in range 2
         final int range=2;
         for(int i=0;i<maxN;i++){
@@ -179,7 +183,7 @@ public class MainActivity extends Activity {
         while(true){
             i+=vx;j+=vy;
             if(inBoard(i,j)){
-                st=st+String.valueOf(valueCell[i][j]);
+                st=st+ valueCell[i][j];
                 if(st.length()==6){
                     rr+=Eval(st,pl);
                     st=st.substring(1,6);
@@ -258,7 +262,7 @@ public class MainActivity extends Activity {
             i+=vx;j+=vy;
         }
         while(true){
-            st=st+String.valueOf(valueCell[i][j]);
+            st=st+ valueCell[i][j];
             if(st.length()==5){
                 EvalEnd(st);
                 st=st.substring(1,5);//substring of st from index 1->5;=> delete first character
@@ -341,7 +345,7 @@ public class MainActivity extends Activity {
         LinearLayout.LayoutParams lpRow = new LinearLayout.LayoutParams(sizeofCell * maxN, sizeofCell);
         LinearLayout.LayoutParams lpCell = new LinearLayout.LayoutParams(sizeofCell, sizeofCell);
 
-        LinearLayout linBoardGame = (LinearLayout) findViewById(R.id.linBoardGame);
+        LinearLayout linBoardGame = findViewById(R.id.linBoardGame);
 
         //create cells
         for (int i = 0; i < maxN; i++) {
@@ -356,17 +360,14 @@ public class MainActivity extends Activity {
                 final int x = i;
                 final int y = j;
                 //make that for safe and clear
-                ivCell[i][j].setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (valueCell[x][y] == 0) {//empty cell
-                            if (turnPlay == 1 || !isClicked) {//turn of player
-                                Log.d("tuanh","click to cell ");
-                                isClicked = true;
-                                xMove = x;
-                                yMove = y;//i,j must be final variable
-                                make_a_move();
-                            }
+                ivCell[i][j].setOnClickListener(v -> {
+                    if (valueCell[x][y] == 0) {//empty cell
+                        if (turnPlay == 1 || !isClicked) {//turn of player
+                            Log.d("tuanh","click to cell ");
+                            isClicked = true;
+                            xMove = x;
+                            yMove = y;//i,j must be final variable
+                            make_a_move();
                         }
                     }
                 });
@@ -387,7 +388,7 @@ public class MainActivity extends Activity {
         //this function is put score for 6 cells in a row
         //pl is player turn => you will get a bonus point if it's your turn
         //I will show you and explain how i can make it and what it mean in part improve bot move
-        int b1 = 1, b2 = 1;
+        int b1, b2;
         if (pl == 1) {
             b1 = 2;
             b2 = 1;
@@ -396,50 +397,66 @@ public class MainActivity extends Activity {
             b2 = 2;
         }
         switch (st) {
-            case "111110":return b1* 100000000;
-            case "011111":return b1* 100000000;
-            case "211111":return b1* 100000000;
-            case "111112":return b1* 100000000;
-            case "011110":return b1* 10000000;
-            case "101110":return b1* 1002;
-            case "011101":return b1* 1002;
-            case "011112":return b1* 1000;
-            case "011100":return b1* 102;
-            case "001110":return b1* 102;
-            case "210111":return b1* 100;
-            case "211110":return b1* 100;
-            case "211011":return b1* 100;
-            case "211101":return b1* 100;
-            case "010100":return b1* 10;
-            case "011000":return b1* 10;
-            case "001100":return b1* 10;
-            case "000110":return b1* 10;
-            case "211000":return b1* 1;
-            case "201100":return b1* 1;
-            case "200110":return b1* 1;
-            case "200011":return b1* 1;
-            case "222220":return b2* -100000000;
-            case "022222":return b2* -100000000;
-            case "122222":return b2* -100000000;
-            case "222221":return b2* -100000000;
-            case "022220":return b2* -10000000;
-            case "202220":return b2* -1002;
-            case "022202":return b2* -1002;
-            case "022221":return b2* -1000;
-            case "022200":return b2* -102;
-            case "002220":return b2* -102;
-            case "120222":return b2* -100;
-            case "122220":return b2* -100;
-            case "122022":return b2* -100;
-            case "122202":return b2* -100;
-            case "020200":return b2* -10;
-            case "022000":return b2* -10;
-            case "002200":return b2* -10;
-            case "000220":return b2* -10;
-            case "122000":return b2* -1;
-            case "102200":return b2* -1;
-            case "100220":return b2* -1;
-            case "100022":return b2* -1;
+            case "111110":
+            case "011111":
+            case "211111":
+            case "111112":
+                return b1* 100000000;
+            case "011110":
+                return b1* 10000000;
+            case "101110":
+            case "011101":
+                return b1* 1002;
+            case "011112":
+                return b1* 1000;
+            case "011100":
+            case "001110":
+                return b1* 102;
+            case "210111":
+            case "211110":
+            case "211011":
+            case "211101":
+                return b1* 100;
+            case "010100":
+            case "011000":
+            case "001100":
+            case "000110":
+                return b1* 10;
+            case "211000":
+            case "201100":
+            case "200110":
+            case "200011":
+                return b1;
+            case "222220":
+            case "022222":
+            case "122222":
+            case "222221":
+                return b2* -100000000;
+            case "022220":
+                return b2* -10000000;
+            case "202220":
+            case "022202":
+                return b2* -1002;
+            case "022221":
+                return b2* -1000;
+            case "022200":
+            case "002220":
+                return b2* -102;
+            case "120222":
+            case "122220":
+            case "122022":
+            case "122202":
+                return b2* -100;
+            case "020200":
+            case "022000":
+            case "002200":
+            case "000220":
+                return b2* -10;
+            case "122000":
+            case "102200":
+            case "100220":
+            case "100022":
+                return b2* -1;
             default:
                 break;
         }
