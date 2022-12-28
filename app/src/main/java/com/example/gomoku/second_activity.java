@@ -4,14 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class second_activity extends AppCompatActivity {
-
+    private int sbValue = 15;
+    private int playWithBot ; // 1 is Bot, 2 is 2 Player
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +23,13 @@ public class second_activity extends AppCompatActivity {
         Button btn_double = findViewById(R.id.btn_double);
         SeekBar seekBar = findViewById(R.id.seekBar);
         TextView tv_value = findViewById(R.id.tv_Value);
-        tv_value.setText(getString(R.string.blockvalue)+"15");
+        tv_value.setText(getString(R.string.blockvalue)+ sbValue);
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                     tv_value.setText(getString(R.string.blockvalue)+i);
+                    sbValue = i;
             }
 
             @Override
@@ -42,29 +43,28 @@ public class second_activity extends AppCompatActivity {
             }
         });
 
-        btn_single.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(second_activity.this,MyService.class);
-                startService(intent);
-                finish();
-            }
+
+
+        btn_single.setOnClickListener(view -> {
+            playWithBot = 1;
+            Intent intent = new Intent(this,MainActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("sbKey",sbValue);
+            bundle.putInt("BotKey",playWithBot);
+            intent.putExtras(bundle);
+            startActivity(intent);
         });
 
-        btn_double.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(second_activity.this,MyService.class);
-                startService(intent);
-                finish();
-            }
+        btn_double.setOnClickListener(view -> {
+            playWithBot = 2;
+            Intent intent = new Intent(this,MainActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("sbKey",sbValue);
+            bundle.putInt("BotKey",playWithBot);
+            intent.putExtras(bundle);
+            startActivity(intent);
         });
 
-        btn_dlc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(second_activity.this, "現在未實裝，以後也不會", Toast.LENGTH_SHORT).show();
-            }
-        });
+        btn_dlc.setOnClickListener(view -> Toast.makeText(second_activity.this, "現在未實裝，以後也不會", Toast.LENGTH_SHORT).show());
     }
 }

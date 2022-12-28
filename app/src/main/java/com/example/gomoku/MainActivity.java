@@ -14,35 +14,40 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends Activity {
     //declare a int for board size
-    final static int maxN = 15;
+    int maxN = 15;
+    int useBot = 1;
     private Context context;
     //declare for imageView (Cells) array
-    private final ImageView[][] ivCell = new ImageView[maxN][maxN];
+    private ImageView[][] ivCell = new ImageView[maxN][maxN];
 
-    private final Drawable[] drawCell = new Drawable[4];//0 is empty, 1 is player, 2 is bot, 3 is background
+    private Drawable[] drawCell = new Drawable[4];//0 is empty, 1 is player, 2 is bot, 3 is background
     private Button btnPlay;
     private TextView tvTurn;
 
-    private final int[][] valueCell = new int[maxN][maxN];///0 is empty,1 is player,2 is bot
+    private int[][] valueCell = new int[maxN][maxN];///0 is empty,1 is player,2 is bot
     private int winner_play;//who is winner? 0 is none, 1 is player, 2 is bot
     private boolean firstMove;
     private int xMove, yMove;//x and y axis of cell => define position of cell
     private int turnPlay;// whose turn?
-    public MainActivity() {
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button btn_back = findViewById(R.id.btn_back);
+
+        Bundle bundle = this.getIntent().getExtras();
+        int sbValue = bundle.getInt("sbKey");
+        int botGet = bundle.getInt("BotKey");
+        maxN = sbValue;
+        useBot = botGet;
+
         btn_back.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this,MyService2.class);
             startService(intent);
@@ -54,6 +59,8 @@ public class MainActivity extends Activity {
         loadResources();
         designBoardGame();
     }
+
+
 
     private void setListen() {
         btnPlay = findViewById(R.id.btnPlay);
@@ -91,13 +98,25 @@ public class MainActivity extends Activity {
         //if this is first move bot always choose center cell (7,7)
         if (firstMove) {
             firstMove = false;
-            xMove = 7;
-            yMove = 7;
-            make_a_move();
+            if(useBot == 1){
+                xMove = 7;
+                yMove = 7;
+                make_a_move();
+            }
+            else{
+                isClicked = false;
+            }
+
         } else {
             //try to find best xMove,yMove
-            findBotMove();
-            make_a_move();
+            if(useBot == 1){
+                findBotMove();
+                make_a_move();
+            }
+            else{
+                isClicked = false;
+            }
+
         }
     }
 
