@@ -24,13 +24,13 @@ public class MainActivity extends Activity {
     int useBot = 1;
     private Context context;
     //declare for imageView (Cells) array
-    private ImageView[][] ivCell = new ImageView[maxN][maxN];
+    private final ImageView[][] ivCell = new ImageView[maxN][maxN];
 
-    private Drawable[] drawCell = new Drawable[4];//0 is empty, 1 is player, 2 is bot, 3 is background
+    private final Drawable[] drawCell = new Drawable[4];//0 is empty, 1 is player, 2 is bot, 3 is background
     private Button btnPlay;
     private TextView tvTurn;
 
-    private int[][] valueCell = new int[maxN][maxN];///0 is empty,1 is player,2 is bot
+    private final int[][] valueCell = new int[maxN][maxN];///0 is empty,1 is player,2 is bot
     private int winner_play;//who is winner? 0 is none, 1 is player, 2 is bot
     private boolean firstMove;
     private int xMove, yMove;//x and y axis of cell => define position of cell
@@ -80,27 +80,42 @@ public class MainActivity extends Activity {
         1. we need define who play first
          */
         Random r = new Random();
-        turnPlay = r.nextInt(2) + 1;//r.nextint(2) return value in [0,1]
+        turnPlay = r.nextInt(2) + 1;//r.nextInt(2) return value in [0,1]
 
-        if (turnPlay == 1) {//player play first
-            //inform => make a toast
-            Toast.makeText(context, getString(R.string.Playerplayfirst), Toast.LENGTH_SHORT).show();//dont forget show(); :D
-            playerTurn();
-        } else {//bot turn
-            Toast.makeText(context, getString(R.string.Botplayfirst), Toast.LENGTH_SHORT).show();//dont forget show(); :D
-            botTurn();
+        if(useBot == 1){
+            if (turnPlay == 1) {//player play first
+                //inform => make a toast
+                Toast.makeText(context,getString(R.string.Player) + getString(R.string.playfirst), Toast.LENGTH_SHORT).show();
+                playerTurn();
+            } else {//bot turn
+                Toast.makeText(context, getString(R.string.Bot) + getString(R.string.playfirst), Toast.LENGTH_SHORT).show();
+                botTurn();
+            }
+        } else {
+            if (turnPlay == 1) {//player play first
+                //inform => make a toast
+                Toast.makeText(context,getString(R.string.Player) + "1" + getString(R.string.playfirst), Toast.LENGTH_SHORT).show();
+                playerTurn();
+            } else {//bot turn
+                Toast.makeText(context, getString(R.string.Player) + "2" + getString(R.string.playfirst), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     private void botTurn() {
         Log.d("tuanh","bot turn");
-        tvTurn.setText(getString(R.string.Bot));
+        if(useBot == 1){
+            tvTurn.setText(getString(R.string.Bot));
+        }
+        else {
+            tvTurn.setText(getString(R.string.Player) + "2");
+        }
         //if this is first move bot always choose center cell (7,7)
         if (firstMove) {
             firstMove = false;
             if(useBot == 1){
-                xMove = 7;
-                yMove = 7;
+                xMove = (int)(Math.random()*maxN +1);
+                yMove = (int)(Math.random()*maxN +1);
                 make_a_move();
             }
             else{
@@ -190,7 +205,7 @@ public class MainActivity extends Activity {
     }
 
     private int CheckValue(int xd, int yd, int vx, int vy, int pl) {
-        //comback with check value
+        //comeback with check value
         int i,j;
         int rr=0;
         i=xd;j=yd;
@@ -214,19 +229,31 @@ public class MainActivity extends Activity {
         ivCell[xMove][yMove].setImageDrawable(drawCell[turnPlay]);
         valueCell[xMove][yMove] = turnPlay;
         //check if anyone win
-        //aw we forget 1 thing :D change the value of valuaCell
+        //aw we forget 1 thing :D change the value of valueCell
         //if no empty cell exist => draw
         if (noEmptycell()) {
             Toast.makeText(context, getString(R.string.Draw), Toast.LENGTH_SHORT).show();
             return;
         } else if (CheckWinner()) {
-            if (winner_play == 1) {
-                Toast.makeText(context, getString(R.string.WinnerisPlayer), Toast.LENGTH_SHORT).show();//
-                tvTurn.setText(getString(R.string.WinnerisPlayer));
-            } else {
-                Toast.makeText(context, getString(R.string.WinnerisBot), Toast.LENGTH_SHORT).show();//
-                tvTurn.setText(getString(R.string.WinnerisBot));
+            if(useBot == 1){
+                if (winner_play == 1) {
+                    Toast.makeText(context, getString(R.string.Winner) + getString(R.string.Player), Toast.LENGTH_SHORT).show();//
+                    tvTurn.setText(getString(R.string.Winner) + getString(R.string.Player));
+                } else {
+                    Toast.makeText(context, getString(R.string.Winner) + getString(R.string.Bot), Toast.LENGTH_SHORT).show();//
+                    tvTurn.setText(getString(R.string.Winner) + getString(R.string.Bot));
+                }
             }
+            else{
+                if (winner_play == 1) {
+                    Toast.makeText(context, getString(R.string.Winner) + getString(R.string.Player) + "1", Toast.LENGTH_SHORT).show();
+                    tvTurn.setText(getString(R.string.Winner) + getString(R.string.Player) + "1");
+                } else {
+                    Toast.makeText(context, getString(R.string.Winner) + getString(R.string.Player) + "2", Toast.LENGTH_SHORT).show();
+                    tvTurn.setText(getString(R.string.Winner) + getString(R.string.Player) + "2");
+                }
+            }
+
             return;
         }
 
@@ -258,7 +285,7 @@ public class MainActivity extends Activity {
         }else{
             VectorEnd(maxN-1,maxN-1-(xMove-yMove),-1,-1,xMove,yMove);
         }
-        if(winner_play!=0) return true; else return false;
+        return winner_play != 0;
     }
 
     private void VectorEnd(int xx, int yy, int vx, int vy, int rx, int ry) {
@@ -291,8 +318,7 @@ public class MainActivity extends Activity {
 
     private boolean inBoard(int i, int j) {
         //check i,j in board or not
-        if(i<0||i>maxN-1||j<0||j>maxN-1) return false;
-        return true;
+        return i >= 0 && i <= maxN - 1 && j >= 0 && j <= maxN - 1;
     }
 
     private void EvalEnd(String st) {
@@ -317,7 +343,12 @@ public class MainActivity extends Activity {
 
     private void playerTurn() {
         Log.d("tuanh","player turn");
-        tvTurn.setText(getString(R.string.Player));
+        if(useBot == 1){
+            tvTurn.setText(getString(R.string.Player));
+        }
+        else {
+            tvTurn.setText(getString(R.string.Player) + "1");
+        }
         firstMove=false;
         isClicked = false;
         /// we get xMove,yMove of player by the way listen click on cell so turn listen on
@@ -352,7 +383,7 @@ public class MainActivity extends Activity {
     @SuppressLint("NewApi")
     private void designBoardGame() {
         //create layoutparams to optimize size of cell
-        // we create a horizotal linearlayout for a row
+        // we create a horizontal linearlayout for a row
         // which contains maxN imageView in
         //need to find out size of cell first
 
@@ -370,7 +401,7 @@ public class MainActivity extends Activity {
                 ivCell[i][j] = new ImageView(context);
                 //make a cell
                 //need to set background default for cell
-                //cell has 3 status, empty(defautl),player,bot
+                //cell has 3 status, empty(default),player,bot
                 ivCell[i][j].setBackground(drawCell[3]);
                 final int x = i;
                 final int y = j;
@@ -398,7 +429,7 @@ public class MainActivity extends Activity {
         return dm.widthPixels;
     }
 
-    //////////////funtion evaluate
+    //////////////function evaluate
     private int Eval(String st, int pl) {
         //this function is put score for 6 cells in a row
         //pl is player turn => you will get a bonus point if it's your turn
