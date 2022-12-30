@@ -17,4 +17,5 @@
     <string name="Player">Player</string>
     <string name= "Draw">Draw!!!</string>
     <string name="Winner">Winner is </string>
+    <string name="dlcversion">The current version has not been installed, and it will not be installed in the future</string>
 </resources>

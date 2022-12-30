@@ -17,5 +17,6 @@
     <string name="Player">玩家</string>
     <string name= "Draw">平手！！！</string>
     <string name="Winner">勝利者： </string>
+    <string name="dlcversion">現版本未實裝，以後也不會</string>
 
 </resources>

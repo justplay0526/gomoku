@@ -65,6 +65,6 @@ public class second_activity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        btn_dlc.setOnClickListener(view -> Toast.makeText(second_activity.this, "現在未實裝，以後也不會", Toast.LENGTH_SHORT).show());
+        btn_dlc.setOnClickListener(view -> Toast.makeText(second_activity.this, getString(R.string.dlcversion), Toast.LENGTH_SHORT).show());
     }
 }
