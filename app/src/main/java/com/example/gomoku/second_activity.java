@@ -3,11 +3,11 @@ package com.example.gomoku;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class second_activity extends AppCompatActivity {
     private int sbValue = 15;
@@ -65,6 +65,12 @@ public class second_activity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        btn_dlc.setOnClickListener(view -> Toast.makeText(second_activity.this, getString(R.string.dlcversion), Toast.LENGTH_SHORT).show());
+        btn_dlc.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=dQw4w9WgXcQ"));
+            intent.setPackage("com.google.android.youtube");
+            intent.putExtra("force_fullscreen",true);
+            startActivity(intent);
+        });
+
     }
 }
