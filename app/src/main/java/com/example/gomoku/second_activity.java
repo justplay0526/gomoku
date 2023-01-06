@@ -53,6 +53,7 @@ public class second_activity extends AppCompatActivity {
             bundle.putInt("BotKey",playWithBot);
             intent.putExtras(bundle);
             startActivity(intent);
+            finish();
         });
 
         btn_double.setOnClickListener(view -> {
@@ -63,6 +64,7 @@ public class second_activity extends AppCompatActivity {
             bundle.putInt("BotKey",playWithBot);
             intent.putExtras(bundle);
             startActivity(intent);
+            finish();
         });
 
         btn_dlc.setOnClickListener(view -> {
